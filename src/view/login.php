@@ -49,6 +49,8 @@
 
                                         <div class="pt-1 mb-4">
                                             <button class="btn btn-dark btn-lg btn-block" type="button">Login</button>
+                                            <a href="/aluguel-carros-php/view/home.php" class="btn btn-dark btn-lg btn-block">Login</a>
+
                                         </div>
                                     </form>
 
