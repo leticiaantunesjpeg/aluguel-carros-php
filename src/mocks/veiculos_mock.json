@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "marca": "Toyota",
+    "modelo": "Corolla",
+    "placa": "ABC-1234",
+    "valor": 78000,
+    "disponibilidade": true,
+    "imagem": "corolla"
+  },
+  {
+    "id": 2,
+    "marca": "Ford",
+    "modelo": "Fiesta",
+    "placa": "DEF-5678",
+    "valor": 45000,
+    "disponibilidade": false,
+    "imagem": "fiesta"
+  },
+  {
+    "id": 3,
+    "marca": "Chevrolet",
+    "modelo": "Onix",
+    "placa": "GHI-9012",
+    "valor": 55000,
+    "disponibilidade": true,
+    "imagem": "onix"
+  }
+]
