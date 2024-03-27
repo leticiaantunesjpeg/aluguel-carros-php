@@ -1,4 +1,4 @@
 <?php
 //include ('./src/view/login.php');
-include ('./src/view/home.php');
+require ('./src/view/home.php');
 ?>

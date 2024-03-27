@@ -41,6 +41,8 @@
 
     <div class="container mt-5 pt-5">
         <?php
+        $acao = 'recuperar';
+        include "./src/controller/conexao.php";
         $page = isset ($_GET['page']) ? $_GET['page'] : 'aluguel';
 
         switch ($page) {
@@ -75,6 +77,17 @@
                 }
             });
         });
+
+  function recuperarDados() {
+    fetch('../controller/veiculo_controller.php?acao=recuperar')
+        .then(response => response.json())
+        .then(data => {
+            // Faça o que for necessário com os dados recuperados
+            console.log(data);
+        })
+        .catch(error => console.error('Erro:', error));
+}
+
     </script>
 
 
