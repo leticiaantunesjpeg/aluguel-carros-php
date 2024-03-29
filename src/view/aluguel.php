@@ -61,6 +61,8 @@
                     <label for="end-date">Data de Fim</label>
                     <input type="date" class="form-control" id="end-date" style="cursor: pointer;" required>
                 </div>
+                <div id="error-message" style="display: none; margin-bottom: 10px;">Por favor, preencha todos os campos
+                    obrigatórios.</div>
                 <button id="continue-reservation-btn" class="btn btn-primary btn-block">Continuar Reserva</button>
             </div>
             <div class="carousel-container">
@@ -74,13 +76,13 @@
                 <form id="customer-form">
 
                     <label for="customer-car" style="color:black;">Carro selecionado</label>
-                    <input type="text" value="carro-selecionado" class="form-control" id="customer-car">
+                    <input type="text" class="form-control" id="customer-car">
 
                     <label for="customer-startDate" style="color:black;">Início da reserva</label>
-                    <input type="text" value="data-inicial-selecionada" class="form-control" id="customer-startDate">
+                    <input type="text" class="form-control" id="customer-startDate">
 
                     <label for="customer-endDate" style="color:black;">Fim da reserva</label>
-                    <input type="text" value="data-final-selecionada" class="form-control" id="customer-endDate">
+                    <input type="text" class="form-control" id="customer-endDate">
 
                     <label for="customer-name" style="color:black;">Nome do Cliente</label>
                     <input type="text" class="form-control" id="customer-name" required><br>
@@ -166,6 +168,19 @@
 
                 $('#continue-reservation-btn').on('click', function (event) {
                     event.preventDefault();
+                    var selectedCar = document.getElementById('car-type-select').value;
+                    var startDate = document.getElementById('start-date').value;
+                    var endDate = document.getElementById('end-date').value;
+
+                    if (selectedCar === "0" || startDate === "" || endDate === "") {
+                        $('#error-message').show();
+                        return false;
+                    }
+
+                    selectedCarId = selectedCar;
+                    selectedStartDate = startDate;
+                    selectedEndDate = endDate;
+
                     onContinueCarReservation();
                 });
 
@@ -176,16 +191,39 @@
             });
 
             function onContinueCarReservation() {
-                selectedStartDate = $('#start-date').val();
-                selectedEndDate = $('#end-date').val();
                 $('#car-selection-form').hide();
                 $('#customer-info-form').show();
+
+                $('#customer-car').val(selectedCarId);
+                $('#customer-startDate').val(selectedStartDate);
+                $('#customer-endDate').val(selectedEndDate);
             }
 
             function onBackToCarSelection() {
                 $('#customer-info-form').hide();
                 $('#car-selection-form').show();
             }
+
+            $('#car-type-select, #start-date, #end-date').on('change', function () {
+                $('#error-message').hide();
+
+                $('#confirm-reservation-btn').on('click', function (event) {
+                    event.preventDefault();
+                    var customerCar = $('#customer-car').val();
+                    var customerName = $('#customer-name').val();
+                    var customerCpf = $('#customer-cpf').val();
+                    var customerAddress = $('#customer-address').val();
+
+                    var reservaData = {
+                        data_inicio: selectedStartDate,
+                        data_fim: selectedEndDate,
+                        id_veiculo: selectedCarId,
+                        id_cliente: customerCpf
+                    };
+
+                    console.log(reservaData);
+                });
+            });
         </script>
 </body>
 
