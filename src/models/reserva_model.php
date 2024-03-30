@@ -5,7 +5,8 @@ class Reserva {
     private $data_inicio;
     private $data_fim;
 	private $id_veiculo;
-	private $id_cliente;
+	private $nome_cliente;
+	private $doc_cliente;
 	
 	public function __get($atributo) {
 		return $this->$atributo;

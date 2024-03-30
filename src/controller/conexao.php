@@ -2,27 +2,26 @@
 
 class Conexao {
 
-	private $host = 'localhost';
-	private $dbname = 'aluguel_veiculos';
-	private $user = 'root';
-	private $pass = '';
+    private $host = 'localhost';
+    private $dbname = 'aluguel_veiculos';
+    private $user = 'root';
+    private $pass = '';
 
-	public function conectar() {
-		try {
+    public function conectar() {
+        try {
+            $conexao = new PDO(
+                "mysql:host=$this->host;dbname=$this->dbname",
+                "$this->user",
+                "$this->pass"                
+            );
 
-			$conexao = new PDO(
-				"mysql:host=$this->host;dbname=$this->dbname",
-				"$this->user",
-				"$this->pass"				
-			);
-
-			return $conexao;
-
-
-		} catch (PDOException $e) {
-			echo '<p>'.$e->getMessage().'</p>';
-		}
-	}
+            return $conexao;
+        } catch (PDOException $e) {
+            echo '<p>'.$e->getMessage().'</p>';
+            exit(); // Ou die() se preferir
+        }
+    }
 }
+
 
 ?>
