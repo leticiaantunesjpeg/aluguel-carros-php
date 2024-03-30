@@ -43,8 +43,7 @@
 </head>
 
 <body>
-    <div style="
-            min-height: 500px;">
+    <div style="min-height: 500px;">
         <div class="container" id="car-selection-form">
             <div class="form-container">
                 <h4 style="text-align: center;">Preencha as informações</h4>
@@ -225,6 +224,10 @@
                 });
             });
         </script>
+
+
+
+
 </body>
 
 </html>

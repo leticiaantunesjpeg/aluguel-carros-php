@@ -1,7 +1,7 @@
 <?php
-require_once "./src/controller/reserva_controller.php";
-require_once "./src/models/reserva_model.php";
-require_once "./src/controller/conexao.php";
+require_once "../controller/reserva_controller.php";
+require_once "../models/reserva_model.php";
+require_once "../controller/conexao.php";
 class ReservaService
 {
     private $conexao;
@@ -9,7 +9,7 @@ class ReservaService
 
     public function __construct(Conexao $conexao, Reserva $reserva)
 {
-    $this->conexao = $conexao->conectar(); // Obtém o objeto PDO da conexão
+    $this->conexao = $conexao->conectar(); 
     $this->reserva = $reserva;
 }
 

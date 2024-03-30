@@ -1,8 +1,8 @@
 <?php
 
-require_once "./conexao.php";
-require_once "./src/models/reserva_model.php";
-require_once "./src/services/reserva_services.php";
+require_once "../controller/conexao.php";
+require_once "../models/reserva_model.php";
+require_once "../services/reserva_services.php";
 
 
 $acao = isset($_GET['acao']) ? $_GET['acao'] : '';

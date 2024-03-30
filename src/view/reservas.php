@@ -1,5 +1,8 @@
 <?php
 require_once "./src/controller/reserva_controller.php";
+require_once('./src/controller/conexao.php');
+require_once('./src/models/reserva_model.php');
+require_once('./src/services/reserva_services.php');
 
 ?>
 
@@ -15,7 +18,7 @@ require_once "./src/controller/reserva_controller.php";
 <body>
     <h1>Adicionar Reserva</h1>
 
-    <form action="../controller/reserva_controller.php?acao=inserir" method="POST">
+    <form action="./src/controller/reserva_controller.php?acao=inserir" method="POST">
     
         <label for="data_inicio">Data de Início:</label>
         <input type="date" name="data_inicio" id="data_inicio" required><br><br>
