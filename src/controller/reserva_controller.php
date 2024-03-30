@@ -31,7 +31,7 @@ if ($acao == 'inserir') {
     $reservaService->inserir();
 
     // Redireciona para a página listar_reservas.php após inserção
-    header('Location: aluguel.php');
+    header('Location: ');
     exit;
 } elseif ($acao == 'atualizar') {
     // Verifica se o ID da reserva foi passado via POST
