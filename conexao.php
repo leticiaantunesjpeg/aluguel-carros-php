@@ -3,7 +3,7 @@
 class Conexao {
 
     private $host = 'localhost';
-    private $dbname = 'aluguel-carros-php';
+    private $dbname = 'aluguel_carros_php';
     private $user = 'root';
     private $pass = '';
 

@@ -9,18 +9,18 @@
 <body>
 
 <?php
-// Incluir o arquivo de configuração do banco de dados e as classes necessárias
-require_once('./src/controller/conexao.php');
-require_once('./src/models/veiculo_model.php');
-require_once('./src/services/veiculo_services.php');
 
-// Criar uma instância da classe Conexao
+require_once('./conexao.php');
+require_once('./veiculo_model.php');
+require_once('./veiculo_services.php');
+
+
 $conexao = new Conexao();
 
-// Criar uma instância da classe VeiculoService
+
 $veiculoService = new VeiculoService($conexao, new Veiculo());
 
-// Recuperar os veículos do banco de dados
+
 $veiculos = $veiculoService->recuperarVeiculos();
 
 if ($veiculos) {

@@ -1,12 +1,16 @@
 <?php
-require_once('./src/models/veiculo_model.php');
-require_once('./src/services/veiculo_services.php');
+require_once('./reserva_model.php');
+require_once('./veiculo_model.php');
+require_once('./veiculo_services.php');
+require_once('./reserva_service.php');
+require_once('./conexao.php');
 
 $conexao = new Conexao();
 
 $veiculoService = new VeiculoService($conexao, new Veiculo());
-
+$reservaService = new ReservaService($conexao, new Reserva());
 $veiculos = $veiculoService->recuperarVeiculos();
+
 ?>
 
 <!DOCTYPE html>
@@ -19,7 +23,7 @@ $veiculos = $veiculoService->recuperarVeiculos();
     <title>Aluguel de Carros</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
-    <link rel="stylesheet" href="./src/view/css/aluguel.css">
+    <link rel="stylesheet" href="aluguel.css">
     <style>
         .owl-carousel .owl-nav button.owl-prev,
         .owl-carousel .owl-nav button.owl-next {
@@ -62,6 +66,9 @@ $veiculos = $veiculoService->recuperarVeiculos();
                 <label>Carro</label>
                 <select id="car-type-select" class="form-control mb-3" style="cursor: pointer;" required>
                     <option value="0">Selecione</option>
+                    <?php foreach ($veiculos as $veiculo): ?>
+                        <option value="<?php echo $veiculo->id; ?>"><?php echo $veiculo->marca . ' ' . $veiculo->modelo; ?></option>
+                    <?php endforeach; ?>
                 </select>
                 <div class="form-group">
                     <label for="start-date">Data de Início</label>
@@ -99,9 +106,6 @@ $veiculos = $veiculoService->recuperarVeiculos();
 
                     <label for="customer-cpf" style="color:black;">CPF</label>
                     <input type="text" class="form-control" id="customer-cpf" required><br>
-
-                    <label for="customer-address" style="color:black;">Endereço</label>
-                    <input type="text" class="form-control" id="customer-address" required><br>
 
                     <button id="back-to-car-selection-btn" class="btn btn-secondary">Voltar para seleção de
                         carro</button>
@@ -153,10 +157,10 @@ $veiculos = $veiculoService->recuperarVeiculos();
                     var startDate = document.getElementById('start-date').value;
                     var endDate = document.getElementById('end-date').value;
 
-                    if (selectedCar === "0" || startDate === "" || endDate === "") {
-                        $('#error-message').show();
-                        return false;
-                    }
+                   // if (selectedCar === "0" || startDate === "" || endDate === "") {
+                  //      $('#error-message').show();
+                  //     return false;
+                   // }
 
                     selectedCarId = selectedCar;
                     selectedStartDate = startDate;
@@ -174,7 +178,6 @@ $veiculos = $veiculoService->recuperarVeiculos();
             function onContinueCarReservation() {
                 $('#car-selection-form').hide();
                 $('#customer-info-form').show();
-
                 $('#customer-car').val(selectedCarId);
                 $('#customer-startDate').val(selectedStartDate);
                 $('#customer-endDate').val(selectedEndDate);
@@ -185,22 +188,37 @@ $veiculos = $veiculoService->recuperarVeiculos();
                 $('#car-selection-form').show();
             }
 
-            $('#car-type-select, #start-date, #end-date').on('change', function() {
-                $('#error-message').hide();
+            $('#confirm-reservation-btn').on('click', function(event) {
+                event.preventDefault();
+                
+                
+                
+                var dataInicio = $('#start-date').val();
+                var dataFim = $('#end-date').val();
+                var idVeiculo = selectedCarId;
+                var nomeCliente = $('#customer-name').val();
+                var docCliente = $('#customer-cpf').val();
 
-                $('#confirm-reservation-btn').on('click', function(event) {
-                    event.preventDefault();
-                    var customerCar = $('#customer-car').val();
-                    var customerName = $('#customer-name').val();
-                    var customerCpf = $('#customer-cpf').val();
-                    var customerAddress = $('#customer-address').val();
-
-                    var reservaData = {
-                        data_inicio: selectedStartDate,
-                        data_fim: selectedEndDate,
-                        id_veiculo: selectedCarId,
-                        id_cliente: customerCpf
-                    };
+                // Fazer a requisição AJAX
+                $.ajax({
+                    url: 'reserva_service.php',
+                    method: 'POST',
+                    data: {
+                        action: 'salvarReserva',
+                        data_inicio: dataInicio,
+                        data_fim: dataFim,
+                        id_veiculo: idVeiculo,
+                        nome_cliente: nomeCliente,
+                        doc_cliente: docCliente
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        alert('Reserva salva com sucesso!');
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                        alert('Erro ao salvar reserva. Por favor, tente novamente.');
+                    }
                 });
             });
         </script>
