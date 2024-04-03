@@ -10,7 +10,6 @@ class VeiculoService
         $this->veiculo = $veiculo;
     }
 
-
     public function recuperarVeiculos()
     {
         $query = 'SELECT * FROM veiculo';

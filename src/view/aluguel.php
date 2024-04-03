@@ -1,13 +1,24 @@
+<?php
+require_once('./src/models/veiculo_model.php');
+require_once('./src/services/veiculo_services.php');
+
+$conexao = new Conexao();
+
+$veiculoService = new VeiculoService($conexao, new Veiculo());
+
+$veiculos = $veiculoService->recuperarVeiculos();
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>Aluguel de Carros</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
     <link rel="stylesheet" href="./src/view/css/aluguel.css">
     <style>
         .owl-carousel .owl-nav button.owl-prev,
@@ -99,48 +110,19 @@
             </div>
         </div>
 
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script defer src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
         <script>
             var selectedCarId;
             var selectedStartDate;
             var selectedEndDate;
 
-            $(document).ready(function () {
-                var cars = [
-                    {
-                        "id": 1,
-                        "marca": "Camaro",
-                        "modelo": "",
-                        "placa": "ABC-1234",
-                        "valor": 78000,
-                        "disponibilidade": true,
-                        "imagem": "jaguar"
-                    },
-                    {
-                        "id": 2,
-                        "marca": "Chevette",
-                        "modelo": "",
-                        "placa": "DEF-5678",
-                        "valor": 45000,
-                        "disponibilidade": false,
-                        "imagem": "chevrolet_chevette"
-                    },
-                    {
-                        "id": 3,
-                        "marca": "corvette",
-                        "modelo": "",
-                        "placa": "GHI-9012",
-                        "valor": 55000,
-                        "disponibilidade": true,
-                        "imagem": "chevrolet_corvette"
-                    }
-                ];
+            $(document).ready(function() {
+                var cars = <?php echo json_encode($veiculos); ?>;
 
                 var selectOptions = '';
                 var carouselItems = '';
 
-                $.each(cars, function (index, car) {
+                $.each(cars, function(index, car) {
                     selectOptions += '<option value="' + car.id + '">' + car.marca + ' ' + car.modelo + '</option>';
                     carouselItems += '<div class="item"><img src="/aluguel-carros-php/assets/imagens/' + car.imagem + '.png" alt="' + car.marca + ' ' + car.modelo + '"></div>';
                 });
@@ -159,13 +141,13 @@
                     autoplayHoverPause: true
                 });
 
-                $('#car-type-select').on('change', function () {
+                $('#car-type-select').on('change', function() {
                     selectedCarId = $(this).val();
                     $('.owl-carousel').trigger('to.owl.carousel', [selectedCarId - 1, 500]);
                 });
 
 
-                $('#continue-reservation-btn').on('click', function (event) {
+                $('#continue-reservation-btn').on('click', function(event) {
                     event.preventDefault();
                     var selectedCar = document.getElementById('car-type-select').value;
                     var startDate = document.getElementById('start-date').value;
@@ -183,7 +165,7 @@
                     onContinueCarReservation();
                 });
 
-                $('#back-to-car-selection-btn').on('click', function (event) {
+                $('#back-to-car-selection-btn').on('click', function(event) {
                     event.preventDefault();
                     onBackToCarSelection();
                 });
@@ -203,10 +185,10 @@
                 $('#car-selection-form').show();
             }
 
-            $('#car-type-select, #start-date, #end-date').on('change', function () {
+            $('#car-type-select, #start-date, #end-date').on('change', function() {
                 $('#error-message').hide();
 
-                $('#confirm-reservation-btn').on('click', function (event) {
+                $('#confirm-reservation-btn').on('click', function(event) {
                     event.preventDefault();
                     var customerCar = $('#customer-car').val();
                     var customerName = $('#customer-name').val();
@@ -219,14 +201,9 @@
                         id_veiculo: selectedCarId,
                         id_cliente: customerCpf
                     };
-
-                    console.log(reservaData);
                 });
             });
         </script>
-
-
-
 
 </body>
 
