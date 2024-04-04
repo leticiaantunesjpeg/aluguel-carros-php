@@ -44,3 +44,89 @@
   background-color: #da5000;
   border-color: #da5000;
 }
+
+.modal-content {
+  border-radius: 15px;
+}
+
+.modal-header {
+  background-color: #ff6219;
+  color: #fff;
+  border-bottom: none;
+}
+
+.modal-title {
+  font-weight: bold;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.modal-header .btn-close {
+  color: #fff;
+}
+
+#errorModal .modal-footer .btn-primary {
+  background-color: #ff6219;
+  border-color: #ff6219;
+}
+
+#errorModal .modal-footer .btn-primary:hover {
+  background-color: #da5000;
+  border-color: #da5000;
+}
+
+
+
+
+.card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.container {
+  justify-content: center;
+}
+
+.continue-reservation-inputs {
+  width: 80%;
+  margin-bottom: 16px;
+}
+
+.customer-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+
+.costumer-back-button,
+.costumer-next-button {
+  width: 80%;
+}
+
+.costumer-next-button {
+  margin-top: 16px;
+  background-color: #ff6219;
+  color: #fff;
+}
+
+.costumer-next-button:hover {
+  background-color: #da5000;
+  border-color: #da5000;
+  color: #fff;
+}
+
+.modal-header .btn-close {
+  display: none;
+}
+
+#successModal .modal-header {
+  background-color: #4CAF50;
+  color: #fff;
+}
+
+#errorModal .modal-header {
+  background-color: #a6120d;
+  color: #fff;
+}

@@ -50,10 +50,6 @@ $veiculos = $veiculoService->recuperarVeiculos();
         .owl-dots {
             display: none;
         }
-
-        .card {
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
     </style>
 </head>
 
@@ -65,8 +61,8 @@ $veiculos = $veiculoService->recuperarVeiculos();
                 <hr>
                 <label>Carro</label>
                 <select id="car-type-select" class="form-control mb-3" style="cursor: pointer;" required>
-                    <option value="0">Selecione</option>
-                    <?php foreach ($veiculos as $veiculo): ?>
+                    <option value="">Selecione</option>
+                    <?php foreach ($veiculos as $veiculo) : ?>
                         <option value="<?php echo $veiculo->id; ?>"><?php echo $veiculo->marca . ' ' . $veiculo->modelo; ?></option>
                     <?php endforeach; ?>
                 </select>
@@ -78,8 +74,9 @@ $veiculos = $veiculoService->recuperarVeiculos();
                     <label for="end-date">Data de Fim</label>
                     <input type="date" class="form-control" id="end-date" style="cursor: pointer;" required>
                 </div>
-                <div id="error-message" style="display: none; margin-bottom: 10px;">Por favor, preencha todos os campos
+                <div id="error-message" style="display: none; margin-bottom: 10px; color: red;">Por favor, preencha todos os campos
                     obrigatórios.</div>
+
                 <button id="continue-reservation-btn" class="btn btn-primary btn-block">Continuar Reserva</button>
             </div>
             <div class="carousel-container">
@@ -87,32 +84,74 @@ $veiculos = $veiculoService->recuperarVeiculos();
             </div>
         </div>
 
-
-        <div class="container" id="customer-info-form" style="display: none; width: 1496px; height:700px;">
-            <div class="form-container">
-                <form id="customer-form">
-
+        <div class="container" id="customer-info-form" style="display: none; width: 1496px;">
+            <div class="form-container" style="width: 60%">
+                <form id="customer-form" class="customer-form">
+                    <h4 style="text-align: center;">Finalize a reserva</h4>
+                    <hr>
                     <label for="customer-car" style="color:black;">Carro selecionado</label>
-                    <input type="text" class="form-control" id="customer-car">
+                    <select class="form-control continue-reservation-inputs" id="customer-car" disabled>
+                        <?php foreach ($veiculos as $veiculo) : ?>
+                            <?php if ($veiculo->id == $selectedCarId) : ?>
+                                <option value="<?php echo $veiculo->id; ?>" selected><?php echo $veiculo->marca . ' ' . $veiculo->modelo; ?></option>
+                            <?php else : ?>
+                                <option value="<?php echo $veiculo->id; ?>"><?php echo $veiculo->marca . ' ' . $veiculo->modelo; ?></option>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </select>
 
                     <label for="customer-startDate" style="color:black;">Início da reserva</label>
-                    <input type="text" class="form-control" id="customer-startDate">
+                    <input type="text" class="form-control continue-reservation-inputs" id="customer-startDate" value="<?php echo $selectedStartDate; ?>" disabled>
 
                     <label for="customer-endDate" style="color:black;">Fim da reserva</label>
-                    <input type="text" class="form-control" id="customer-endDate">
+                    <input type="text" class="form-control continue-reservation-inputs" id="customer-endDate" value="<?php echo $selectedEndDate; ?>" disabled>
 
                     <label for="customer-name" style="color:black;">Nome do Cliente</label>
-                    <input type="text" class="form-control" id="customer-name" required><br>
+                    <input type="text" class="form-control continue-reservation-inputs" id="customer-name" required>
 
                     <label for="customer-cpf" style="color:black;">CPF</label>
-                    <input type="text" class="form-control" id="customer-cpf" required><br>
+                    <input type="text" class="form-control continue-reservation-inputs" id="customer-cpf" required><br>
 
-                    <button id="back-to-car-selection-btn" class="btn btn-secondary">Voltar para seleção de
-                        carro</button>
-                    <button id="confirm-reservation-btn" class="btn btn-primary">Confirmar Reserva</button>
+                    <div id="customer-error-message" style="display: none; margin-bottom: 15px; margin-top: -20px; color: red;">Por favor, preencha todos os campos obrigatórios.</div>
+
+                    <button id="back-to-car-selection-btn" class="btn btn-secondary costumer-back-button">Voltar</button>
+                    <button id="confirm-reservation-btn" class="btn  costumer-next-button">Finalizar</button>
                 </form>
             </div>
         </div>
+
+        <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="successModalLabel">Sucesso!</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        A reserva foi salva com sucesso!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="errorModalLabel">Erro!</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Houve um erro ao salvar a reserva. Por favor, tente novamente.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer>
+            <div class="container" style="margin-top: 45px">
+                <p>© 2024 Aluguel de Carros. Todos os direitos reservados.</p>
+            </div>
+        </footer>
 
         <script defer src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
         <script>
@@ -157,10 +196,10 @@ $veiculos = $veiculoService->recuperarVeiculos();
                     var startDate = document.getElementById('start-date').value;
                     var endDate = document.getElementById('end-date').value;
 
-                   // if (selectedCar === "0" || startDate === "" || endDate === "") {
-                  //      $('#error-message').show();
-                  //     return false;
-                   // }
+                    if (selectedCar === "" || startDate === "" || endDate === "") {
+                        $('#error-message').show();
+                        return false;
+                    }
 
                     selectedCarId = selectedCar;
                     selectedStartDate = startDate;
@@ -190,16 +229,22 @@ $veiculos = $veiculoService->recuperarVeiculos();
 
             $('#confirm-reservation-btn').on('click', function(event) {
                 event.preventDefault();
-                
-                
-                
-                var dataInicio = $('#start-date').val();
-                var dataFim = $('#end-date').val();
-                var idVeiculo = selectedCarId;
+
                 var nomeCliente = $('#customer-name').val();
                 var docCliente = $('#customer-cpf').val();
 
-                // Fazer a requisição AJAX
+                if (!nomeCliente || !docCliente) {
+                    $('#customer-error-message').show();
+                    return false;
+                } else {
+                    $('#customer-error-message').hide();
+                }
+
+
+                var dataInicio = $('#start-date').val();
+                var dataFim = $('#end-date').val();
+                var idVeiculo = selectedCarId;
+
                 $.ajax({
                     url: 'reserva_service.php',
                     method: 'POST',
@@ -212,13 +257,13 @@ $veiculos = $veiculoService->recuperarVeiculos();
                         doc_cliente: docCliente
                     },
                     success: function(response) {
-                        console.log(response);
-                        alert('Reserva salva com sucesso!');
+                        $('#successModal').modal('show');
                     },
                     error: function(xhr, status, error) {
+                        $('#errorModal').modal('show');
                         console.error(error);
-                        alert('Erro ao salvar reserva. Por favor, tente novamente.');
                     }
+
                 });
             });
         </script>
