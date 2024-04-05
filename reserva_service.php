@@ -53,27 +53,23 @@ class ReservaService
     public function excluirReserva($idReserva)
     {
         try {
-          
             $query = "SELECT id_veiculo FROM reserva WHERE id = :idReserva";
             $stmt = $this->conexao->prepare($query);
             $stmt->bindParam(':idReserva', $idReserva);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            
-          
+
             if ($result && isset($result['id_veiculo'])) {
                 $idVeiculo = $result['id_veiculo'];
-    
-                
+
                 $query = "DELETE FROM reserva WHERE id = :idReserva";
                 $stmt = $this->conexao->prepare($query);
                 $stmt->bindParam(':idReserva', $idReserva);
                 $stmt->execute();
-    
-               
+
                 $veiculoService = new VeiculoService(new Conexao(), new Veiculo());
                 $veiculoService->atualizarDisponibilidadeVeiculo($idVeiculo, 1);
-                
+
                 return true;
             } else {
                 echo "Reserva não encontrada ou dados inválidos.";
@@ -84,28 +80,21 @@ class ReservaService
             return false;
         }
     }
-    
 
-
-
-
-}
-
-
-$conexao = new Conexao();
-$reservaService = new ReservaService($conexao->conectar(), new Reserva());
-if (isset($_POST['action']) && $_POST['action'] == 'salvarReserva') {
-    $dataInicio = $_POST['data_inicio'];
-    $dataFim = $_POST['data_fim'];
-    $idVeiculo = $_POST['id_veiculo'];
-    $nomeCliente = $_POST['nome_cliente'];
-    $docCliente = $_POST['doc_cliente'];
-
-    $resultado = $reservaService->salvarReserva($dataInicio, $dataFim, $idVeiculo, $nomeCliente, $docCliente);
-    if ($resultado) {
-        echo "Reserva salva com sucesso!";
-    } else {
-        echo "Erro ao salvar reserva. Por favor, tente novamente.";
+    // Função para lidar com a solicitação AJAX de exclusão de reserva
+    public function handleRequest()
+    {
+        if (isset($_POST['action']) && $_POST['action'] == 'excluirReserva') {
+            $idReserva = $_POST['id_reserva'];
+            $resultado = $this->excluirReserva($idReserva);
+            echo json_encode(["success" => $resultado]); // Retornar o resultado da exclusão como JSON
+            exit; // Encerrar a execução após enviar a resposta AJAX
+        }
     }
 }
+
+// Instanciar a classe ReservaService e tratar a solicitação
+$conexao = new Conexao();
+$reservaService = new ReservaService($conexao->conectar(), new Reserva());
+$reservaService->handleRequest();
 ?>
