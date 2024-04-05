@@ -149,12 +149,6 @@ $veiculos = $veiculoService->recuperarVeiculos();
         </div>
     </div>
 
-    <footer>
-        <div class="container" style="margin-top: 45px">
-            <p>© 2024 Aluguel de Carros. Todos os direitos reservados.</p>
-        </div>
-    </footer>
-
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <script>
         var selectedCarId;
