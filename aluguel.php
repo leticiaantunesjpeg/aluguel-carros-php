@@ -1,7 +1,7 @@
 <?php
 require_once('./reserva_model.php');
 require_once('./veiculo_model.php');
-require_once('./veiculo_services.php');
+require_once('./veiculo_service.php');
 require_once('./reserva_service.php');
 require_once('./conexao.php');
 
@@ -147,126 +147,167 @@ $veiculos = $veiculoService->recuperarVeiculos();
                 </div>
             </div>
         </div>
-        <footer>
-            <div class="container" style="margin-top: 45px">
-                <p>© 2024 Aluguel de Carros. Todos os direitos reservados.</p>
-            </div>
-        </footer>
+    </div>
 
-        <script defer src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
-        <script>
-            var selectedCarId;
-            var selectedStartDate;
-            var selectedEndDate;
+    <footer>
+        <div class="container" style="margin-top: 45px">
+            <p>© 2024 Aluguel de Carros. Todos os direitos reservados.</p>
+        </div>
+    </footer>
 
-            $(document).ready(function() {
-                var cars = <?php echo json_encode($veiculos); ?>;
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script>
+        var selectedCarId;
+        var selectedStartDate;
+        var selectedEndDate;
 
-                var selectOptions = '';
-                var carouselItems = '';
+        $(document).ready(function() {
+            var cars = <?php echo json_encode($veiculos); ?>;
 
-                $.each(cars, function(index, car) {
-                    selectOptions += '<option value="' + car.id + '">' + car.marca + ' ' + car.modelo + '</option>';
-                    carouselItems += '<div class="item"><img src="/aluguel-carros-php/assets/imagens/' + car.imagem + '.png" alt="' + car.marca + ' ' + car.modelo + '"></div>';
-                });
+            var selectOptions = '';
+            var carouselItems = '';
 
-                $('#car-type-select').append(selectOptions);
-                $('.owl-carousel').html(carouselItems);
-
-                $(".owl-carousel").owlCarousel({
-                    items: 1,
-                    loop: true,
-                    nav: true,
-                    dots: true,
-                    autoplay: true,
-                    autoplaySpeed: 1000,
-                    smartSpeed: 1500,
-                    autoplayHoverPause: true
-                });
-
-                $('#car-type-select').on('change', function() {
-                    selectedCarId = $(this).val();
-                    $('.owl-carousel').trigger('to.owl.carousel', [selectedCarId - 1, 500]);
-                });
-
-
-                $('#continue-reservation-btn').on('click', function(event) {
-                    event.preventDefault();
-                    var selectedCar = document.getElementById('car-type-select').value;
-                    var startDate = document.getElementById('start-date').value;
-                    var endDate = document.getElementById('end-date').value;
-
-                    if (selectedCar === "" || startDate === "" || endDate === "") {
-                        $('#error-message').show();
-                        return false;
-                    }
-
-                    selectedCarId = selectedCar;
-                    selectedStartDate = startDate;
-                    selectedEndDate = endDate;
-
-                    onContinueCarReservation();
-                });
-
-                $('#back-to-car-selection-btn').on('click', function(event) {
-                    event.preventDefault();
-                    onBackToCarSelection();
-                });
+            $.each(cars, function(index, car) {
+                selectOptions += '<option value="' + car.id + '">' + car.marca + ' ' + car.modelo + '</option>';
+                carouselItems += '<div class="item"><img src="/aluguel-carros-php/assets/imagens/' + car.imagem + '.png" alt="' + car.marca + ' ' + car.modelo + '"></div>';
             });
 
-            function onContinueCarReservation() {
-                $('#car-selection-form').hide();
-                $('#customer-info-form').show();
-                $('#customer-car').val(selectedCarId);
-                $('#customer-startDate').val(selectedStartDate);
-                $('#customer-endDate').val(selectedEndDate);
-            }
+            $('#car-type-select').append(selectOptions);
+            $('.owl-carousel').html(carouselItems);
 
-            function onBackToCarSelection() {
-                $('#customer-info-form').hide();
-                $('#car-selection-form').show();
-            }
+            $(".owl-carousel").owlCarousel({
+                items: 1,
+                loop: true,
+                nav: true,
+                dots: true,
+                autoplay: true,
+                autoplaySpeed: 1000,
+                smartSpeed: 1500,
+                autoplayHoverPause: true
+            });
 
-            $('#confirm-reservation-btn').on('click', function(event) {
+            $('#car-type-select').on('change', function() {
+                selectedCarId = $(this).val();
+                $('.owl-carousel').trigger('to.owl.carousel', [selectedCarId - 1, 500]);
+            });
+
+            $('#continue-reservation-btn').on('click', function(event) {
                 event.preventDefault();
+                var selectedCar = document.getElementById('car-type-select').value;
+                var startDate = document.getElementById('start-date').value;
+                var endDate = document.getElementById('end-date').value;
 
-                var nomeCliente = $('#customer-name').val();
-                var docCliente = $('#customer-cpf').val();
-
-                if (!nomeCliente || !docCliente) {
-                    $('#customer-error-message').show();
+                if (selectedCar === "" || startDate === "" || endDate === "") {
+                    $('#error-message').show();
                     return false;
-                } else {
-                    $('#customer-error-message').hide();
                 }
 
+                selectedCarId = selectedCar;
+                selectedStartDate = startDate;
+                selectedEndDate = endDate;
 
-                var dataInicio = $('#start-date').val();
-                var dataFim = $('#end-date').val();
-                var idVeiculo = selectedCarId;
-
-                $.ajax({
-                    url: 'reserva_service.php',
-                    method: 'POST',
-                    data: {
-                        action: 'salvarReserva',
-                        data_inicio: dataInicio,
-                        data_fim: dataFim,
-                        id_veiculo: idVeiculo,
-                        nome_cliente: nomeCliente,
-                        doc_cliente: docCliente
-                    },
-                    success: function(response) {
-                        $('#successModal').modal('show');
-                    },
-                    error: function(xhr, status, error) {
-                        $('#errorModal').modal('show');
-                        console.error(error);
-                    }
-
-                });
+                onContinueCarReservation();
             });
-        </script>
+
+            $('#back-to-car-selection-btn').on('click', function(event) {
+                event.preventDefault();
+                onBackToCarSelection();
+            });
+        });
+
+        function onContinueCarReservation() {
+            $('#car-selection-form').hide();
+            $('#customer-info-form').show();
+            $('#customer-car').val(selectedCarId);
+            $('#customer-startDate').val(selectedStartDate);
+            $('#customer-endDate').val(selectedEndDate);
+        }
+
+        function onBackToCarSelection() {
+            $('#customer-info-form').hide();
+            $('#car-selection-form').show();
+        }
+
+        $('#confirm-reservation-btn').on('click', function(event) {
+            event.preventDefault();
+
+            var nomeCliente = $('#customer-name').val();
+            var docCliente = $('#customer-cpf').val();
+
+            if (!nomeCliente || !docCliente) {
+                $('#customer-error-message').show();
+                return false;
+            } else {
+                $('#customer-error-message').hide();
+            }
+
+            var dataInicio = $('#start-date').val();
+            var dataFim = $('#end-date').val();
+            var idVeiculo = selectedCarId;
+
+            // Verificar disponibilidade do veículo
+            $.ajax({
+                url: 'veiculo_service.php',
+                method: 'POST',
+                data: {
+                    action: 'verificarDisponibilidade',
+                    id_veiculo: idVeiculo
+                },
+                success: function(disponibilidade) {
+                    if (disponibilidade == 1) {
+                        // Disponibilidade igual a 1, pode prosseguir com a reserva
+                        $.ajax({
+                            url: 'reserva_service.php',
+                            method: 'POST',
+                            data: {
+                                action: 'salvarReserva',
+                                data_inicio: dataInicio,
+                                data_fim: dataFim,
+                                id_veiculo: idVeiculo,
+                                nome_cliente: nomeCliente,
+                                doc_cliente: docCliente
+                            },
+                            success: function(response) {
+                                // Após a reserva ser salva com sucesso, atualize a disponibilidade do veículo
+                                $.ajax({
+                                    url: 'veiculo_service.php',
+                                    method: 'POST',
+                                    data: {
+                                        action: 'atualizarDisponibilidade',
+                                        id_veiculo: idVeiculo
+                                    },
+                                    success: function(response) {
+                                        $('#successModal').modal('show');
+                                    },
+                                    error: function(xhr, status, error) {
+                                        $('#errorModal').modal('show');
+                                        console.error(error);
+                                    }
+                                });
+                            },
+                            error: function(xhr, status, error) {
+                                $('#errorModal').modal('show');
+                                console.error(error);
+                            }
+                        });
+                    } else {
+                        // Disponibilidade diferente de 1, exibir mensagem de erro
+                        $('#errorModal').modal('show').find('.modal-body').text('O veículo selecionado não está disponível para reserva.');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    $('#errorModal').modal('show');
+                    console.error(error);
+                }
+            });
+        });
+
+    </script>
+
+
+
+
+
 
 </body>
 
