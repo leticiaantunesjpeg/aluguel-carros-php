@@ -1,26 +1,14 @@
 <?php
 require_once('./reserva_model.php');
 require_once('./conexao.php');
-require_once('./reserva_service.php'); // Adicione esta linha para incluir o serviço de reserva
+require_once('./reserva_service.php');
+require_once('./veiculo_service.php');
 
 $conexao = new Conexao();
+$veiculoService = new VeiculoService($conexao, new Veiculo());
+$veiculos = $veiculoService->recuperarVeiculos();
+
 $reservaService = new ReservaService($conexao->conectar(), new Reserva());
-
-if (isset($_POST['action']) && $_POST['action'] == 'salvarReserva') {
-    $dataInicio = $_POST['data_inicio'];
-    $dataFim = $_POST['data_fim'];
-    $idVeiculo = $_POST['id_veiculo'];
-    $nomeCliente = $_POST['nome_cliente'];
-    $docCliente = $_POST['doc_cliente'];
-
-    $resultado = $reservaService->salvarReserva($dataInicio, $dataFim, $idVeiculo, $nomeCliente, $docCliente);
-    if ($resultado) {
-        echo "Reserva salva com sucesso!";
-    } else {
-        echo "Erro ao salvar reserva. Por favor, tente novamente.";
-    }
-}
-
 $reservas = $reservaService->listarReservas();
 ?>
 
@@ -30,40 +18,50 @@ $reservas = $reservaService->listarReservas();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reservas</title>
+    <!-- Inclusão do CSS personalizado -->
+    <link rel="stylesheet" href="reservas.css">
     <!-- Adicione o jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <h1>Reservas</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Data Início</th>
-                <th>Data Fim</th>
-                <th>ID Veículo</th>
-                <th>Nome Cliente</th>
-                <th>Documento Cliente</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($reservas as $reserva) : ?>
-                <tr>
-                    <td><?php echo $reserva['id']; ?></td>
-                    <td><?php echo $reserva['data_inicio']; ?></td>
-                    <td><?php echo $reserva['data_fim']; ?></td>
-                    <td><?php echo $reserva['id_veiculo']; ?></td>
-                    <td><?php echo $reserva['nome_cliente']; ?></td>
-                    <td><?php echo $reserva['doc_cliente']; ?></td>
-                    <td>
+    <h1 class="title">Reservas</h1>
+    <div class="container">
+        <?php foreach ($reservas as $reserva) : ?>
+            <div class="reserva-card">
+                <div class="reserva-info">
+                    <p><span class="info-label">Nome:</span> <?php echo $reserva['nome_cliente']; ?></p>
+                    <p><span class="info-label">CPF:</span> <?php echo $reserva['doc_cliente']; ?></p>
+                    <p><span class="info-label">Data Início:</span> <?php echo $reserva['data_inicio']; ?></p>
+                    <p><span class="info-label">Data Fim:</span> <?php echo $reserva['data_fim']; ?></p>
+                    <p><span class="info-label">Valor:</span> 
+                    <?php 
+                        foreach ($veiculos as $veiculo) {
+                            if ($veiculo->id == $reserva['id_veiculo']) {
+                                echo $veiculo->valor;
+                                break; // Sair do loop assim que encontrar o valor
+                            }
+                        }
+                    ?>
+                    </p>
+                    <div class="reserva-actions">
                         <!-- Botão de Excluir Reserva -->
                         <button class="btn-excluir-reserva" data-id="<?php echo $reserva['id']; ?>">Excluir Reserva</button>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+                    </div>
+                </div>
+
+                <div class="reserva-image">
+                    <?php 
+                    foreach ($veiculos as $veiculo) {
+                        if ($veiculo->id == $reserva['id_veiculo']) {
+                            echo '<div class="item"><img src="/aluguel-carros-php/assets/imagens/' . $veiculo->imagem .'.png"></div>';
+                            break; // Sair do loop assim que encontrar a imagem
+                        }
+                    }
+                    ?>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
 
     <script>
         $(document).ready(function(){

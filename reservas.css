@@ -1,0 +1,78 @@
+.title {
+    margin-top: 20px;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 0 20px 0 20px;
+}
+
+.reserva-card {
+    display: flex;
+    width: 70%;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+    width: 80%;
+    
+    padding: 10px 0 0 10px;
+}
+
+.reserva-card:hover {
+    transform: translateY(-5px);
+}
+
+.reserva-image {
+    flex: 1;
+    padding: 10px;
+}
+
+.reserva-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.reserva-info {
+    flex: 2;
+    padding: 20px 0 0 20px;
+}
+
+.reserva-info p {
+    margin: 5px 0;
+}
+
+.info-label {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.reserva-actions {
+    display: flex;
+    flex-direction: column; /* Ajustado para exibir os botões em uma coluna */
+    justify-content: flex-start; /* Alinhado à esquerda */
+}
+
+.reserva-actions button {
+    margin-bottom: 6px;
+    padding: 8px 10px; /* Preenchimento do botão */
+    background-color: #f44336;
+    color: white;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 4px;
+    max-width: 150px; /* Largura máxima do botão */
+    white-space: nowrap; /* Impede a quebra de texto */
+    overflow: hidden; /* Oculta qualquer conteúdo extra que possa vazar */
+    text-overflow: ellipsis; /* Adiciona reticências (...) se o conteúdo estiver cortado */
+}
+
+.reserva-actions button:hover {
+    background-color: #d32f2f;
+}
