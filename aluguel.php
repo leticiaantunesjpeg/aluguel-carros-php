@@ -263,13 +263,11 @@ $veiculos = $veiculoService->recuperarVeiculos();
                                     },
                                     error: function(xhr, status, error) {
                                         $('#errorModal').modal('show');
-                                        console.error(error);
                                     }
                                 });
                             },
                             error: function(xhr, status, error) {
                                 $('#errorModal').modal('show');
-                                console.error(error);
                             }
                         });
                     } else {
@@ -279,7 +277,6 @@ $veiculos = $veiculoService->recuperarVeiculos();
                 },
                 error: function(xhr, status, error) {
                     $('#errorModal').modal('show');
-                    console.error(error);
                 }
             });
         });
