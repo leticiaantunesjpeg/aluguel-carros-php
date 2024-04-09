@@ -58,19 +58,18 @@ class VeiculoService
         }
     }
 
-    // Tratamento da solicitação AJAX
+
     public function handleRequest()
     {
         if (isset($_POST['action']) && $_POST['action'] == 'verificarDisponibilidade') {
             $idVeiculo = $_POST['id_veiculo'];
             $disponibilidade = $this->verificarDisponibilidadeVeiculo($idVeiculo);
             echo $disponibilidade;
-            exit; // Encerrar a execução após enviar a resposta AJAX
+            exit;
         }
     }
 }
 
-// Instanciar a classe VeiculoService e tratar a solicitação
 $conexao = new Conexao();
 $veiculoService = new VeiculoService($conexao, new Veiculo());
 $veiculoService->handleRequest();

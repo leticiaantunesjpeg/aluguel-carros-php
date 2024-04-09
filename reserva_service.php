@@ -26,11 +26,10 @@ class ReservaService
             $stmt->bindParam(':docCliente', $docCliente);
             $stmt->execute();
 
-            // Atualizar a disponibilidade do veículo para 0 (indisponível)
             $veiculoService = new VeiculoService(new Conexao(), new Veiculo());
             $veiculoService->atualizarDisponibilidadeVeiculo($idVeiculo, 0);
 
-            echo json_encode(["success" => true]); // Retorna sucesso como JSON
+            echo json_encode(["success" => true]);
         } catch (PDOException $e) {
             echo json_encode(["success" => false, "message" => "Erro ao salvar reserva: " . $e->getMessage()]); // Retorna erro como JSON
         }
@@ -55,7 +54,7 @@ class ReservaService
                 $veiculoService = new VeiculoService(new Conexao(), new Veiculo());
                 $veiculoService->atualizarDisponibilidadeVeiculo($idVeiculo, 1);
 
-                echo json_encode(["success" => true]); // Retorna sucesso como JSON
+                echo json_encode(["success" => true]);
             } else {
                 echo json_encode(["success" => false, "message" => "Reserva não encontrada ou dados inválidos."]); // Retorna erro como JSON
             }
@@ -102,7 +101,7 @@ class ReservaService
     
 }
 
-// Instanciar a classe ReservaService e tratar a solicitação
+
 $conexao = new Conexao();
 $reservaService = new ReservaService($conexao->conectar(), new Reserva());
 $reservaService->handleRequest();

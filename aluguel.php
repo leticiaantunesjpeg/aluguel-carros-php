@@ -6,11 +6,9 @@ require_once('./reserva_service.php');
 require_once('./conexao.php');
 
 $conexao = new Conexao();
-
 $veiculoService = new VeiculoService($conexao, new Veiculo());
 $reservaService = new ReservaService($conexao, new Reserva());
 $veiculos = $veiculoService->recuperarVeiculos();
-
 ?>
 
 <!DOCTYPE html>
@@ -34,19 +32,16 @@ $veiculos = $veiculoService->recuperarVeiculos();
             border-radius: 50%;
             top: 50%;
         }
-
         .owl-carousel .owl-nav button.owl-prev:hover,
         .owl-carousel .owl-nav button.owl-next:hover {
             background-color: #ffdcbf;
         }
-
         .owl-nav button span {
             font-size: 40px;
             height: 100%;
             width: 100%;
             color: #ff6219;
         }
-
         .owl-dots {
             display: none;
         }
@@ -74,9 +69,7 @@ $veiculos = $veiculoService->recuperarVeiculos();
                     <label for="end-date">Data de Fim</label>
                     <input type="date" class="form-control" id="end-date" style="cursor: pointer;" required>
                 </div>
-                <div id="error-message" style="display: none; margin-bottom: 10px; color: red;">Por favor, preencha todos os campos
-                    obrigatórios.</div>
-
+                <div id="error-message" style="display: none; margin-bottom: 10px; color: red;">Por favor, preencha todos os campos obrigatórios.</div>
                 <button id="continue-reservation-btn" class="btn btn-primary btn-block">Continuar Reserva</button>
             </div>
             <div class="carousel-container">
@@ -99,21 +92,16 @@ $veiculos = $veiculoService->recuperarVeiculos();
                             <?php endif; ?>
                         <?php endforeach; ?>
                     </select>
-
+                    
                     <label for="customer-startDate" style="color:black;">Início da reserva</label>
                     <input type="text" class="form-control continue-reservation-inputs" id="customer-startDate" value="<?php echo $selectedStartDate; ?>" disabled>
-
                     <label for="customer-endDate" style="color:black;">Fim da reserva</label>
                     <input type="text" class="form-control continue-reservation-inputs" id="customer-endDate" value="<?php echo $selectedEndDate; ?>" disabled>
-
                     <label for="customer-name" style="color:black;">Nome do Cliente</label>
                     <input type="text" class="form-control continue-reservation-inputs" id="customer-name" required>
-
                     <label for="customer-cpf" style="color:black;">CPF</label>
                     <input type="text" class="form-control continue-reservation-inputs" id="customer-cpf" required><br>
-
                     <div id="customer-error-message" style="display: none; margin-bottom: 15px; margin-top: -20px; color: red;">Por favor, preencha todos os campos obrigatórios.</div>
-
                     <button id="back-to-car-selection-btn" class="btn btn-secondary costumer-back-button">Voltar</button>
                     <button id="confirm-reservation-btn" class="btn  costumer-next-button">Finalizar</button>
                 </form>
@@ -239,7 +227,7 @@ $veiculos = $veiculoService->recuperarVeiculos();
             var dataFim = $('#end-date').val();
             var idVeiculo = selectedCarId;
 
-            // Verificar disponibilidade do veículo
+            
             $.ajax({
                 url: 'veiculo_service.php',
                 method: 'POST',
@@ -249,7 +237,7 @@ $veiculos = $veiculoService->recuperarVeiculos();
                 },
                 success: function(disponibilidade) {
                     if (disponibilidade == 1) {
-                        // Disponibilidade igual a 1, pode prosseguir com a reserva
+                        
                         $.ajax({
                             url: 'reserva_service.php',
                             method: 'POST',
@@ -262,7 +250,7 @@ $veiculos = $veiculoService->recuperarVeiculos();
                                 doc_cliente: docCliente
                             },
                             success: function(response) {
-                                // Após a reserva ser salva com sucesso, atualize a disponibilidade do veículo
+                                
                                 $.ajax({
                                     url: 'veiculo_service.php',
                                     method: 'POST',
@@ -285,7 +273,7 @@ $veiculos = $veiculoService->recuperarVeiculos();
                             }
                         });
                     } else {
-                        // Disponibilidade diferente de 1, exibir mensagem de erro
+                        
                         $('#errorModal').modal('show').find('.modal-body').text('O veículo selecionado não está disponível para reserva.');
                     }
                 },

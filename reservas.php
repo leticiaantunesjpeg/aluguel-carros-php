@@ -18,9 +18,9 @@ $reservas = $reservaService->listarReservas();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reservas</title>
-    <!-- Inclusão do CSS personalizado -->
+    
     <link rel="stylesheet" href="reservas.css">
-    <!-- Adicione o jQuery -->
+    
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
@@ -38,13 +38,13 @@ $reservas = $reservaService->listarReservas();
                         foreach ($veiculos as $veiculo) {
                             if ($veiculo->id == $reserva['id_veiculo']) {
                                 echo $veiculo->valor;
-                                break; // Sair do loop assim que encontrar o valor
+                                break; 
                             }
                         }
                     ?>
                     </p>
                     <div class="reserva-actions">
-                        <!-- Botão de Excluir Reserva -->
+                        
                         <button class="btn-excluir-reserva" data-id="<?php echo $reserva['id']; ?>">Excluir Reserva</button>
                     </div>
                 </div>
@@ -54,7 +54,7 @@ $reservas = $reservaService->listarReservas();
                     foreach ($veiculos as $veiculo) {
                         if ($veiculo->id == $reserva['id_veiculo']) {
                             echo '<div class="item"><img src="/aluguel-carros-php/assets/imagens/' . $veiculo->imagem .'.png"></div>';
-                            break; // Sair do loop assim que encontrar a imagem
+                            break;
                         }
                     }
                     ?>
@@ -75,7 +75,7 @@ $reservas = $reservaService->listarReservas();
                     success: function(response){
                         if(response.success){
                             alert('Reserva excluída com sucesso!');
-                            location.reload(); // Atualizar a página após a exclusão
+                            location.reload(); 
                         } else {
                             alert('Erro ao excluir reserva. Por favor, tente novamente.');
                         }

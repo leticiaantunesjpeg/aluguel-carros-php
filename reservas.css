@@ -54,23 +54,23 @@
 
 .reserva-actions {
     display: flex;
-    flex-direction: column; /* Ajustado para exibir os botões em uma coluna */
-    justify-content: flex-start; /* Alinhado à esquerda */
+    flex-direction: column;
+    justify-content: flex-start; 
 }
 
 .reserva-actions button {
     margin-bottom: 6px;
-    padding: 8px 10px; /* Preenchimento do botão */
+    padding: 8px 10px; 
     background-color: #f44336;
     color: white;
     border: none;
     font-size: 14px;
     cursor: pointer;
     border-radius: 4px;
-    max-width: 150px; /* Largura máxima do botão */
-    white-space: nowrap; /* Impede a quebra de texto */
-    overflow: hidden; /* Oculta qualquer conteúdo extra que possa vazar */
-    text-overflow: ellipsis; /* Adiciona reticências (...) se o conteúdo estiver cortado */
+    max-width: 150px; 
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .reserva-actions button:hover {

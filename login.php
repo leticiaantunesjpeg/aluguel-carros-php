@@ -48,9 +48,8 @@
                                         </div>
 
                                         <div class="pt-1 mb-4">
-                                            <button class="btn btn-dark btn-lg btn-block" type="button">Login</button>
-                                            <a href="/aluguel-carros-php/view/home.php" class="btn btn-dark btn-lg btn-block">Login</a>
-
+                                            <a href="/aluguel-carros-php/home.php" class="btn btn-dark btn-lg btn-block">Login</a>
+                                            <a href="/aluguel-carros-php/home.php" class="btn btn-dark btn-lg btn-block">Cadastro</a>
                                         </div>
                                     </form>
 

@@ -8,7 +8,6 @@ class Veiculo {
 	private $valor;
     private $disponibilidade;
     private $imagem;
-	
 	public function __get($atributo) {
 		return $this->$atributo;
 	}

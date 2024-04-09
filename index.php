@@ -1,6 +1,6 @@
 <?php
-//include ('login.php');
-require ('home.php');
+require ('login.php');
+//require ('home.php');
 ?>
 
 
