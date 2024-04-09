@@ -77,17 +77,6 @@
                 }
             });
         });
-
-  function recuperarDados() {
-    fetch('veiculo_controller.php?acao=recuperar')
-        .then(response => response.json())
-        .then(data => {
-           
-            console.log(data);
-        })
-        .catch(error => console.error('Erro:', error));
-    }
-
     </script>
 
 
